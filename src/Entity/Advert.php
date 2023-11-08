@@ -3,12 +3,17 @@
 namespace App\Entity;
 
 use App\Repository\AdvertRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AdvertRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields: ['title'], message: 'Une autre annonce possède déjà ce titre')]
 class Advert
 {
     #[ORM\Id]
@@ -17,48 +22,91 @@ class Advert
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(
+        min: 3,
+        max: 255,
+        minMessage: 'La marque doit faire au minimum {{ limit }} caractères',
+        maxMessage: 'La marque doit faire au maximum {{ limit }} caractères',
+    )]
     private ?string $brand = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(
+        min: 3,
+        max: 255,
+        minMessage: 'Le modèle doit faire au minimum {{ limit }} caractères',
+        maxMessage: 'Le modèle doit faire au maximum {{ limit }} caractères',
+    )]
     private ?string $model = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[Assert\Length(
+        min: 5,
+        max: 255,
+        minMessage: 'Le titre doit faire au minimum {{ limit }} caractères',
+        maxMessage: 'Le titre doit faire au maximum {{ limit }} caractères',
+    )]
+    private ?string $title = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(500, message: 'Le prix doit être supérieur à {{ compared_value }}')]
     private ?float $price = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?int $kilometers = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Url(message: 'Il faut une URL valide')]
     private ?string $coverImage = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?int $totalOwners = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?float $EngineDisplacement = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?float $power = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Le type de carburant doit faire au minimum {{ limit }} caractères',
+        maxMessage: 'Le type de carburant doit faire au maximum {{ limit }} caractères',
+    )]
     private ?string $fuelType = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $yearRegistration = null;
-
     #[ORM\Column(length: 50)]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Le type de transmission doit faire au minimum {{ limit }} caractères',
+        maxMessage: 'Le type de transmission doit faire au maximum {{ limit }} caractères',
+    )]
     private ?string $transmission = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(
+        min: 20,
+        max: 500,
+        minMessage: 'Votre description doit comporter au moins {{ limit }} caractères.',
+        maxMessage: 'Votre description doit comporter au maximum {{ limit }} caractères.',
+    )]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Length(
+        max: 500,
+        maxMessage: 'Votre description doit comporter au maximum {{ limit }} caractères.',
+    )]
     private ?string $car_options = null;
 
     #[ORM\ManyToOne(inversedBy: 'adverts')]
@@ -66,11 +114,30 @@ class Advert
     private ?user $seller = null;
 
     #[ORM\OneToMany(mappedBy: 'advert', targetEntity: AdvertImage::class, orphanRemoval: true)]
+    #[Assert\Valid]
     private Collection $advertImages;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\Date]
+    private ?\DateTimeInterface $yearOfRegistration = null;
 
     public function __construct()
     {
         $this->advertImages = new ArrayCollection();
+    }
+
+    /**
+     * Permet d'initialiser automatiquement le slug si on ne le donne pas
+     * @return void
+     */
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function initializeSlug(): void
+    {
+        if (empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->title);
+        }
     }
 
     public function getId(): ?int
@@ -102,14 +169,14 @@ class Advert
         return $this;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): static
+    public function setTitle(string $title): static
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
@@ -210,18 +277,6 @@ class Advert
         return $this;
     }
 
-    public function getYearRegistration(): ?\DateTimeInterface
-    {
-        return $this->yearRegistration;
-    }
-
-    public function setYearRegistration(\DateTimeInterface $yearRegistration): static
-    {
-        $this->yearRegistration = $yearRegistration;
-
-        return $this;
-    }
-
     public function getTransmission(): ?string
     {
         return $this->transmission;
@@ -296,6 +351,18 @@ class Advert
                 $advertImage->setAdvert(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getYearOfRegistration(): ?\DateTimeInterface
+    {
+        return $this->yearOfRegistration;
+    }
+
+    public function setYearOfRegistration(\DateTimeInterface $yearOfRegistration): static
+    {
+        $this->yearOfRegistration = $yearOfRegistration;
 
         return $this;
     }

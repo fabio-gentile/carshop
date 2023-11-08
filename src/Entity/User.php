@@ -6,37 +6,63 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields: ['email'], message: "Un autre utilisateur possède déjà cette adresse e-mail, merci de la modifier")]
+class User implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
+    #[Assert\Email(message: "Veuillez renseigner une adresse e-mail valide")]
     private ?string $email = null;
 
+    /**
+     * @var string The hashed password
+     */
     #[ORM\Column(length: 255)]
+    #[Assert\Length(
+        min: 5,
+        max: 255,
+        minMessage: 'Votre mot de passe doit comporter au minimum {{ limit }} caractères',
+        maxMessage: 'Votre mot de passe doit comporter au maximum {{ limit }} caractères',
+    )]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+    #[Assert\EqualTo(propertyPath: "password", message: "Vous n'avez pas correctement confirmé votre mot de passe")]
     private ?string $passwordConfirm = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Veuillez renseigner votre prénom")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Veuillez renseigner votre nom de famille")]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Image(mimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'], mimeTypesMessage: "Le type de l'image est invalide ({{ type }}). Les images acceptées sont {{ types }}.")]
+    #[Assert\File(maxSize: "1024k", maxSizeMessage: "La taille du fichier est trop grande (maximum {{ limit }} {{ suffix }})")]
     private ?string $picture = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(
+        min: 20,
+        max: 500,
+        minMessage: 'Votre description doit comporter au moins {{ limit }} caractères.',
+        maxMessage: 'Votre description doit comporter au maximum {{ limit }} caractères.',
+    )]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'seller', targetEntity: Advert::class, orphanRemoval: true)]
@@ -46,6 +72,21 @@ class User
     public function __construct()
     {
         $this->adverts = new ArrayCollection();
+    }
+
+    /**
+     * Permet de créer un slug automatiquement avec le nom et prénom de l'utilisateur
+     *
+     * @return void
+     */
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function initializeSlug(): void
+    {
+        if (empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->firstName . ' ' . $this->lastName . ' ' . uniqid());
+        }
     }
 
     public function getId(): ?int
