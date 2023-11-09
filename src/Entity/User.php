@@ -3,18 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: "Un autre utilisateur possède déjà cette adresse e-mail, merci de la modifier")]
-class User implements PasswordAuthenticatedUserInterface
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,6 +26,9 @@ class User implements PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, unique: true)]
     #[Assert\Email(message: "Veuillez renseigner une adresse e-mail valide")]
     private ?string $email = null;
+
+    #[ORM\Column]
+    private array $roles = [];
 
     /**
      * @var string The hashed password
@@ -38,7 +43,7 @@ class User implements PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[Assert\EqualTo(propertyPath: "password", message: "Vous n'avez pas correctement confirmé votre mot de passe")]
-    private ?string $passwordConfirm = null;
+    public ?string $passwordConfirm = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Veuillez renseigner votre prénom")]
@@ -56,7 +61,7 @@ class User implements PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, length: 100, nullable: false)]
     #[Assert\Length(
         min: 20,
         max: 500,
@@ -106,7 +111,39 @@ class User implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPassword(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -118,16 +155,13 @@ class User implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPasswordConfirm(): ?string
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
     {
-        return $this->passwordConfirm;
-    }
-
-    public function setPasswordConfirm(string $passwordConfirm): static
-    {
-        $this->passwordConfirm = $passwordConfirm;
-
-        return $this;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getFirstName(): ?string
@@ -218,5 +252,10 @@ class User implements PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function getFullName() : string
+    {
+        return $this->firstName . ' ' . $this->lastName;
     }
 }

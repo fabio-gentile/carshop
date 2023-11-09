@@ -8,11 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'home')]
     public function index(): Response
     {
-        $fuelType = ['Essence', 'Diesel', 'Électrique', 'Hybride', 'GPL'];
-        dd($fuelType[rand(0, count($fuelType) - 1)]);
         return $this->render('home/index.html.twig', [
 
         ]);

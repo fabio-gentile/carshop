@@ -29,16 +29,15 @@
                             <a href="" class="dropdown-item">Mon compte</a>
                             <a href="" class="dropdown-item">Modifier mon profil</a>
                             <div class="dropdown-divider"></div>
-                            <a href="" class="dropdown-item">Déconnexion</a>
+                            <a href="{{ path('account_logout') }}" class="dropdown-item">Déconnexion</a>
                         </div>
                     </li>
-
                 {% else %}
                     <li class="nav-item">
-                        <a href="" class="nav-link">Inscription</a>
+                        <a href="{{ path('account_register') }}" class="nav-link">Inscription</a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link">Connexion</a>
+                        <a href="{{ path('account_login') }}" class="nav-link">Connexion</a>
                     </li>
                 {% endif %}
 
@@ -46,9 +45,9 @@
         </div>
     </div>
 </nav>
-{# dump(app.flashes) #}
+
 {% for label, messages in app.flashes %}
-    <div class="container">
+    <div class="container mt-5">
         <div class='alert alert-{{ label }}'>
             {% for message in messages %}
                 <p>{{ message | raw }}</p>

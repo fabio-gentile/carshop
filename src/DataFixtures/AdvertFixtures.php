@@ -66,7 +66,7 @@ class AdvertFixtures extends Fixture
                 ->setTransmission($faker->randomElement($transmissions))
                 ->setSeller($user)
                 ->setDescription($faker->paragraphs(4, true))
-                ->setCarOptions(join(' ', $faker->randomElements($carOptions, null)));
+                ->setCarOptions(join(', ', $faker->randomElements($carOptions, null)));
 
             for ($j = 0; $j < rand(3,6); $j++) {
                 $image = new AdvertImage();
