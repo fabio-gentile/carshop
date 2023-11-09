@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid mx-4">
-        <a class="navbar-brand" href="{{ path('app_home') }}">Carshop</a>
+    <div class="container-fluid mx-md-4">
+        <a class="navbar-brand" href="{{ path('home') }}">Carshop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
                 aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -10,11 +10,11 @@
             <ul class="navbar-nav me-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_home') }}">Accueil</a>
+                    <a class="nav-link" href="{{ path('home') }}">Accueil</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="">Annonces</a>
+                    <a class="nav-link" href="{{ path('advert_index') }}">Ventes</a>
                 </li>
 
             </ul>
