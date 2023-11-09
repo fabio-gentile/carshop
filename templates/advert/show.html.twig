@@ -1,0 +1,134 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Annonce : {{ advert.title }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <a href="{{ path('advert_index') }}" class="mt-3">> Retour</a>
+            <div class="col-lg-6 mt-3">
+                <div class="bd-example">
+                    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+                        <div class="carousel-indicators">
+                            {% for image in advert.advertImages %}
+                                <button type="button" data-bs-target="#carouselExampleCaptions"
+                                        data-bs-slide-to="{{ loop.index0 }}" {% if loop.first %} class="active" aria-current="true" {% endif %}
+                                        aria-label="Slide {{ loop.index }}"></button>
+                            {% endfor %}
+                        </div>
+                        <div class="carousel-inner">
+                            {% for image in advert.advertImages %}
+                                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                    <img src="{{ image.url }}" class="d-block w-100" alt="image de {{ advert.title }}">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <p>{{ image.caption }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-3">
+                <h3><strong>{{ advert.brand }} {{ advert.model }}</strong></h3>
+                <p class="fw-bold text-uppercase">{{ advert.engineDisplacement }} {{ advert.transmission }} {{ advert.power }}CH {{ advert.fuelType }}</p>
+                <div class="d-flex flex-column border-top border-1">
+                    <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                        <p>Prix</p>
+                        <p>{{ advert.price | number_format }}€</p>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                        <p>Propriétaire{{ advert.totalOwners > 1 ? 's' }}</p>
+                        <p>{{ advert.totalOwners }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                        <p>Kilométrage</p>
+                        <p>{{ advert.kilometers | number_format }}km</p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="row gap-lg-0 gap-2">
+                        <div class="col-lg-6 col-12">
+                            <a class="w-100 bg-primary text-white py-3 d-block text-center text-decoration-none text-uppercase" href="">Contacter le vendeur</a>
+                        </div>
+                        <div class="col-lg-6 col-12">
+                            <a class="w-100 bg-primary text-white py-3 d-block text-center text-decoration-none text-uppercase" href="">En Savoir plus</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <p class="fw-bold fs-4">Historique du véhicule</p>
+                <div class="row">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                            <p>Kilométrage</p>
+                            <p>{{ advert.kilometers | number_format }}km</p>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                            <p>Propriétaire{{ advert.totalOwners > 1 ? 's' }}</p>
+                            <p>{{ advert.totalOwners }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                            <p>Mise en circulation</p>
+                            <p>{{ advert.yearOfRegistration | date("m/Y") }}</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="fw-bold fs-4 mt-4">Caractéristiques Techniques</p>
+                <div class="row">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                            <p>Marque</p>
+                            <p>{{ advert.brand }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                            <p>Modèle</p>
+                            <p>{{ advert.model }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                            <p>Cylindrée</p>
+                            <p>{{ advert.engineDisplacement }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                            <p>Puissance</p>
+                            <p>{{ advert.power }}CH</p>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                            <p>Type de carburant</p>
+                            <p>{{ advert.fuelType }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom border-1 mt-3">
+                            <p>Transmission</p>
+                            <p>{{ advert.transmission }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom border-1 mt-3 flex-wrap">
+                            {% if advert.carOptions %}
+                            <p>Options</p>
+                            <p>{{ advert.carOptions }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <p class="fw-bold fs-4 mt-4">Description de l'annonce</p>
+                <div class="row">
+                    <div>
+                        {{ advert.description | nl2br }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
