@@ -17,3 +17,15 @@ body {
     object-fit: cover;
 }
 
+.avatar {
+    width: 128px;
+    height: 128px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+@media screen and (max-width: 992px){
+    .account-button {
+        width: 100% !important;
+    }
+}

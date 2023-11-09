@@ -59,16 +59,17 @@
                 <div class="mt-4">
                     <div class="row gap-lg-0 gap-2">
                         <div class="col-lg-6 col-12">
-                            <a class="w-100 bg-primary text-white py-3 d-block text-center text-decoration-none text-uppercase" href="">Contacter le vendeur</a>
+                            {% set sellerUrl = path('user_show', {'slug': advert.seller.slug}) %}
+                            <a class="w-100 bg-primary text-white py-3 d-block text-center text-decoration-none text-uppercase" href="{{ sellerUrl }}">Contacter le vendeur</a>
                         </div>
                         <div class="col-lg-6 col-12">
-                            <a class="w-100 bg-primary text-white py-3 d-block text-center text-decoration-none text-uppercase" href="">En Savoir plus</a>
+                            <a class="w-100 bg-primary text-white py-3 d-block text-center text-decoration-none text-uppercase" href="#characteristic">En Savoir plus</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
+        <div class="row mt-4" id="characteristic">
             <div class="col">
                 <p class="fw-bold fs-4">Historique du véhicule</p>
                 <div class="row">
