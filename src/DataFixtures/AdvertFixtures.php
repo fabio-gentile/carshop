@@ -34,7 +34,6 @@ class AdvertFixtures extends Fixture
             $lastName = $faker->lastName();
             $user->setEmail($faker->email())
                 ->setPassword($hash)
-                ->setPicture('https://ui-avatars.com/api/?name=' . $firstName . '+' . $lastName)
                 ->setDescription($faker->paragraphs(2, true))
                 ->setFirstName($firstName)
                 ->setLastName($lastName);
