@@ -26,23 +26,24 @@ class AdvertFixtures extends Fixture
 
         $faker = Factory::create('fr_FR');
         $users = [];
-        // generate 20 users
-        for ($i = 0; $i < 20; $i++) {
+        // generate 15 users
+        for ($i = 0; $i < 15; $i++) {
             $user = new User();
             $hash = $this->passwordHasher->hashPassword($user, 'password');
-
+            $firstName = $faker->firstName();
+            $lastName = $faker->lastName();
             $user->setEmail($faker->email())
                 ->setPassword($hash)
-                ->setPicture('')
+                ->setPicture('https://ui-avatars.com/api/?name=' . $firstName . '+' . $lastName)
                 ->setDescription($faker->paragraphs(2, true))
-                ->setFirstName($faker->firstName())
-                ->setLastName($faker->lastName());
+                ->setFirstName($firstName)
+                ->setLastName($lastName);
             $manager->persist($user);
             $users[] = $user;
         }
 
-        // generate 50 cars
-        for ($i = 0; $i < 50; $i++) {
+        // generate 40 cars
+        for ($i = 0; $i < 40; $i++) {
             $advert = new Advert();
             $engineDisplacement = [1, 1.2, 1.4, 1.6, 1.8, 2];
             $brands = ['Toyota', 'Ford' , 'Honda', 'Volkswagen', 'BMW'];
@@ -59,7 +60,7 @@ class AdvertFixtures extends Fixture
                 ->setCoverImage('https://picsum.photos/600/300')
                 ->setTotalOwners(rand(1, 4))
                 ->setEngineDisplacement($engineDisplacement[rand(0, count($engineDisplacement) - 1)])
-                ->setPower(rand(100, 450))
+                ->setPower(rand(100, 300))
                 ->setFuelType($fuelType[rand(0, count($fuelType) - 1)])
                 ->setYearOfRegistration($faker->dateTimeBetween('-20 years'))
                 ->setTransmission($faker->randomElement($transmissions))
