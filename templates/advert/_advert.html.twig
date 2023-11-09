@@ -1,0 +1,14 @@
+{% set url = path('advert_show', {'slug': advert.slug}) %}
+<div class="col-md-4">
+    <a class="card bg-light mb-3 text-decoration-none" href="{{ url }}">
+        <div>
+            <img src="{{ advert.coverImage }}" alt="image de l'annonce {{ advert.title }}" class="img-fluid">
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">{{ advert.brand }} {{ advert.model }}</h4>
+            <p class="card-text">{{ advert.description | u.truncate(150, '...')}}</p>
+            <p class="card-text"><strong class="fw-bold">Kilométrage :</strong> {{ advert.kilometers | number_format }}km</p>
+            <p class="card-text"><strong class="fw-bold">Prix :</strong> {{ advert.price | number_format }}€</p>
+        </div>
+    </a>
+</div>
