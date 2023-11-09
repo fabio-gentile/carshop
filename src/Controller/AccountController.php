@@ -95,11 +95,52 @@ class AccountController extends AbstractController
             $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Inscription réalisée avec succès');
-            return $this->redirectToRoute('account_login');
+            return $this->redirectToRoute('account_profile');
         }
         return $this->render("account/registration.html.twig", [
             'myForm' => $form->createView()
         ]);
     }
 
+    /**
+     * Permet de modifier le mot de passe
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param UserPasswordHasherInterface $hasher
+     * @return Response
+     */
+    #[Route("/account/password-update", name: "account_password")]
+    #[IsGranted('ROLE_USER')]
+    public function updatePassword(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
+    {
+        $passwordUpdate = new PasswordUpdate();
+        $user = $this->getUser();
+        $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // vérifier si le mot de passe correspond à l'ancien
+            if (!password_verify($passwordUpdate->getOldPassword(), $user->getPassword())) {
+                // gestion de l'erreur
+                $form->get('oldPassword')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel"));
+            } else {
+                $newPassword = $passwordUpdate->getNewPassword();
+                $hash = $hasher->hashPassword($user, $newPassword);
+
+                $user->setPassword($hash);
+                $manager->persist($user);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Votre mot de passe a bien été modifié'
+                );
+                return $this->redirectToRoute('home');
+            }
+        }
+        return $this->render("account/passwordChange.html.twig", [
+            'myForm' => $form->createView()
+        ]);
+    }
 }
