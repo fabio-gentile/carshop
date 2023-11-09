@@ -53,7 +53,6 @@ class AdvertFixtures extends Fixture
 
             $advert->setBrand($brands[rand(0, count($brands) - 1)])
                 ->setModel('Modèle ' . $i)
-                ->setTitle($faker->sentence())
                 ->setPrice(rand(4000, 25000))
                 ->setKilometers(rand(0, 250000))
                 ->setCoverImage('https://picsum.photos/600/300')

@@ -37,15 +37,6 @@ class Advert
     )]
     private ?string $model = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\Length(
-        min: 5,
-        max: 255,
-        minMessage: 'Le titre doit faire au minimum {{ limit }} caractères',
-        maxMessage: 'Le titre doit faire au maximum {{ limit }} caractères',
-    )]
-    private ?string $title = null;
-
     #[ORM\Column]
     #[Assert\GreaterThanOrEqual(500, message: 'Le prix doit être supérieur à {{ compared_value }}')]
     private ?float $price = null;
@@ -163,18 +154,6 @@ class Advert
     public function setModel(string $model): static
     {
         $this->model = $model;
-
-        return $this;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): static
-    {
-        $this->title = $title;
 
         return $this;
     }
