@@ -9,6 +9,9 @@
             {% for advert in adverts %}
                 {% include 'advert/_advert.html.twig' %}
             {% endfor %}
+            <div class="navigation d-flex justify-content-center mt-4">
+                {{ knp_pagination_render(adverts) }}
+            </div>
         </div>
     </div>
 {% endblock %}
