@@ -95,7 +95,7 @@ class AccountController extends AbstractController
             $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Inscription réalisée avec succès');
-            return $this->redirectToRoute('account_profile');
+            return $this->redirectToRoute('account_login');
         }
         return $this->render("account/registration.html.twig", [
             'myForm' => $form->createView()
@@ -136,7 +136,7 @@ class AccountController extends AbstractController
                     'success',
                     'Votre mot de passe a bien été modifié'
                 );
-                return $this->redirectToRoute('home');
+                return $this->redirectToRoute('account_profile');
             }
         }
         return $this->render("account/passwordChange.html.twig", [
