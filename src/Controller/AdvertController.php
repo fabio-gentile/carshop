@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Ad;
 use App\Entity\Advert;
 use App\Form\AdvertType;
 use App\Repository\AdvertRepository;
@@ -115,6 +116,27 @@ class AdvertController extends AbstractController
             'advert' => $advert,
             'myForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * Supprimer une annonce
+     * @param Advert $advert
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route('/advert/{slug}/delete', name: 'advert_delete')]
+    #[IsGranted(
+        attribute: new Expression('(user === subject and is_granted("ROLE_USER")) or is_granted("ROLE_ADMIN")'),
+        subject: new Expression('args["advert"].getSeller()'),
+        message: "Cette annonce ne vous appartient pas, vous ne pouvez pas la supprimer"
+    )]
+    public function delete(Advert $advert, EntityManagerInterface $manager) : Response
+    {
+        $this->addFlash('success', "L'annonce de <strong>" . $advert->getSeller()->getFullName() . "</strong> a bien été supprimée");
+        $manager->remove($advert);
+        $manager->flush();
+
+        return $this->redirectToRoute('advert_index');
     }
 
     /**
