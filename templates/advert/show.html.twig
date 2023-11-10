@@ -4,7 +4,14 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <a href="{{ path('advert_index') }}" class="mt-3" id="annonceRedirectButton">> Retour</a>
+            {% if (app.user and app.user == advert.seller) or is_granted('ROLE_ADMIN') %}
+                <div class="d-block mt-3">
+                    <a href="{{ path('advert_edit', {'slug':advert.slug}) }}" class="btn btn-warning">Modification de
+                        l'annonce</a>
+                    <a href="{{ path('advert_delete', {'slug':advert.slug}) }}" class="btn btn-danger m-2">Supprimer
+                        l'annonce</a>
+                </div>
+            {% endif %}
             <div class="col-lg-6 mt-3">
                 {% if advert.advertImages | length > 0 %}
                 <div class="bd-example">
