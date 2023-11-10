@@ -29,13 +29,19 @@
             {# test si le user de la page est égal au user connecté #}
             {% if user is same as (app.user) %}
                 <div class="mt-4">
-                    <a href="" class="btn btn-primary me-2 mb-2 account-button">Modifier mes
+                    <a href="{{ path('account_profile') }}" class="btn btn-primary me-2 mb-2 account-button">Modifier mes
                         informations</a>
-                    <a href="" class="btn btn-primary me-2 mb-2 account-button">Modifier mon mot de
+                    <a href="{{ path('account_password') }}" class="btn btn-primary me-2 mb-2 account-button">Modifier mon mot de
                         passe</a>
-                    <a href="" class="btn btn-primary me-2 mb-2 account-button">Modifier mon
-                        avatar</a>
-{#                    <a href="" class="btn btn-danger me-2 mb-2">Supprimer mon avatar</a>#}
+                    <div class="btn-group me-2 mb-2 account-button">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Avatar
+                        </button>
+                        <ul class="dropdown-menu account-button">
+                            <a href="{{ path('account_image_modify') }}" class="btn dropdown-item">Modifier</a>
+                            <a href="{{ path('account_image_delete') }}" class="btn dropdown-item">Supprimer</a>
+                        </ul>
+                    </div>
                 </div>
             {% endif %}
         </div>
