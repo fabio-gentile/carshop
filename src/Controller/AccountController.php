@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\PasswordUpdate;
 use App\Entity\User;
+use App\Form\AccountType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -141,6 +143,42 @@ class AccountController extends AbstractController
         }
         return $this->render("account/passwordChange.html.twig", [
             'myForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Modifier son profil
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route("/account/profile", name: "account_profile")]
+    #[IsGranted('ROLE_USER')]
+    public function profile(Request $request, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+//        dd($user);
+        // validation des images
+        $picture = $user->getPicture();
+        if (!empty($picture)) {
+            $user->setPicture(new File($this->getParameter('uploads_directory') . '/' . $picture));
+        }
+
+        $form = $this->createForm(AccountType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPicture($picture);
+            $manager->persist($user);
+            $manager->flush();
+
+            $this->addFlash('success', 'Les données ont été enregistrées avec succès');
+            return $this->redirectToRoute('account_index');
+        }
+
+        return $this->render('account/profile.html.twig', [
+            'myForm' => $form->createView(),
+            'user' => $user
         ]);
     }
 }
