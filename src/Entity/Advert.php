@@ -107,7 +107,7 @@ class Advert
     private Collection $advertImages;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\Date]
+    #[Assert\NotNull]
     private ?\DateTimeInterface $yearOfRegistration = null;
 
     public function __construct()
