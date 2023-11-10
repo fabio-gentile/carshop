@@ -3,7 +3,7 @@
 {% block title %}Modification de l'avatar{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
+    <div class="container my-5">
         <h1>Modification de l'avatar de {{ app.user.fullName }}</h1>
         {% if app.user.picture %}
             <img src="/uploads/{{ app.user.picture }}" alt="Avatar de {{ app.user.fullName }}" class="avatar mb-3 my-2">

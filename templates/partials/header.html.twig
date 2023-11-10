@@ -42,7 +42,7 @@
 </nav>
 
 {% for label, messages in app.flashes %}
-    <div class="container mt-5">
+    <div class="container my-5">
         <div class='alert alert-{{ label }}'>
             {% for message in messages %}
                 <p>{{ message | raw }}</p>
