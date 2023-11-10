@@ -2,7 +2,7 @@
 
 {% block title %}Annonce : {{ advert.brand }} {{ advert.model }}{% endblock %}
 {% block body %}
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
             {% if (app.user and app.user == advert.seller) or is_granted('ROLE_ADMIN') %}
                 <div class="d-block mt-3">
