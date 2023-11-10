@@ -1,11 +1,12 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Annonce : {{ advert.title }}{% endblock %}
+{% block title %}Annonce : {{ advert.brand }} {{ advert.model }}{% endblock %}
 {% block body %}
     <div class="container">
         <div class="row">
             <a href="{{ path('advert_index') }}" class="mt-3" id="annonceRedirectButton">> Retour</a>
             <div class="col-lg-6 mt-3">
+                {% if advert.advertImages | length > 0 %}
                 <div class="bd-example">
                     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
                         <div class="carousel-indicators">
@@ -18,7 +19,7 @@
                         <div class="carousel-inner">
                             {% for image in advert.advertImages %}
                                 <div class="carousel-item {% if loop.first %}active{% endif %}">
-                                    <img src="{{ image.url }}" class="d-block w-100" alt="image de {{ advert.title }}">
+                                    <img src="{{ image.url }}" class="d-block w-100" alt="image de {{ advert.seller.fullName }}">
                                     <div class="carousel-caption d-none d-md-block">
                                         <p>{{ image.caption }}</p>
                                     </div>
@@ -37,6 +38,9 @@
                         </button>
                     </div>
                 </div>
+                {% else %}
+                <img src="data:image/webp;base64,UklGRmQKAABXRUJQVlA4WAoAAAAgAAAAVwIAjwEASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggdggAAHBYAJ0BKlgCkAE+0WivUyglpKKgcnhpABoJaW7hd2Eb843xr/b+27v7ruujvMz+S/hbGayfYATrPk96BHtD9R/5HGvpGtADipBmRgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAUII/HuTaPweXojDd6phu9UpI6CsxA3eAYlSENb1vT8rkdgdb2kxNM9xuyxbp5iMSqYlogv3DBMajuWj2C4OUnGT3pMk5st6oNQBVyWSAjL/dfN5axxIGCUMPA6MBzpdhg7IjKSEnVKWhuR9q7vO5M+oIDuSzmM99FM9Wn8qIF4cefUvxjq6u5+h1nT1smGU0tTyg/qF7NxgWjtybFwyx+zfabzG+qZ6sxEuPcrcWVIIqMAuGOr8ZqoiYPFIufl4rBfEGHpECgG2DFy/K4PrIKeCEwpPeQEhO5TUA1Ezk6fGCgfzPwGiJQGi/J4HUDozCBIEtlMgMKS7wfXkTnBlimcvKyQjcjZUUtk+AKuS2zGAXDHWHbNQ+rmi0JbuzGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXDHWACrktsxgFwx1gAq5LbMYBcMdYAKuS2zGAXBoAP7/sQAAAAAAAAAAAAAAWfrRsyJkc2c1Zdxs7widBXxHSN999UReUTGEeaS5BD/gGJ7LZCa6ZOSQr+zJGlStcnZpCGyMq50Np+9riE/pmZP6orpOPPZ6m4qpIBnRbYV5SyY8KvuVS0bTfFvhOFswFL6VCqM76fzdhtiPe65YzX4ZXWxVGe8kf0HvYFEObghPcF6MVbF91liCCKMuj+ekUPmX5BAT38uvvAzxbo2d+WxZLEA2BFdy2PIRkGb0ChSHyjyfVYQA0mdate0g8S+49FBDQGSzP5AelaKD60SpV2apqG5DZnSrBOWFo1Vs1dzHc2oiOzRDSo8hoFSX5cLNNXXojrV1C7+njUiXr7Je/x6M46MdtgxRD6SC6isi50DaQoNd87Rh+fJkrvCfynyvwsvAUK+wQuv90XVatiwSEmk4Swfe7QlR09nz/qtdjbU8NftN/nZyOvyB36xdRgnY5eRFW+Nk+K7hgie9Yzh8mydjl7zwiqAQpK7wHBkuxOsJqVo559H5eVJzdnkVJ4ItFRv9QCkI/rIFqkCjuzKJx/v5LgVOuXmaxJkfJjEt65UiAs+X0h2Nl2ypNtehvn1gUV4y+0KoQQnbC7jtnU60MorVfsSNDy9ZG8uTXo/vC5jf38yYC9x4Stg5yDZUgDEXSSfVHVAMMiIppN3HuO1XBUXa/hsGrMvSQ6L0xaYxGlJ0Wt/YXBtjatqOouQuhaSmfd5pGYFVxLW1aAUblp7jUpbgYBjXSBWxDZnRXy3I4tmZCaGrkO9QEwW2XG4XUN3MSPZ97ZbO9pebk954/KDhVSwlYOdCVfPs4yPxt+szQpCzCxD4CmnD46lkueQ9Lh5eYNHpNpTeratQK9ErYU1oES6kSF5/NSOGAvak7pbp5bHs/GhTuoN6mnQwQHpbkEssGmmPfsoIDsS3HfQ/GTYcXQUIZd3sR9BqepVZWTvxcBzTR6EPpFl76PozsdYJCR95/Q0sSCXa60dTgBO+LyGNxzvk7+pPYB9NbCsif1jpF40Qn/GO2pyD7kPm9TY7mtdudnFw9UFtO0QU9F400axGvHUrRi8ApkrHE0wA3kiuLnZGihvv/XT2H5txllFUK8t2OUHzKhbOn/O5lgzSLJdW/+5XGOuwbgediVJ2APdgUIUFj08JVipwxFgop+f2gOhL0bIoEmt0mILS/PvSBsraFI+sSVVf4NL+ybAgu/s0UvrjIjEG7V07ZdYVVFnRny9tn946vkFe+bVsUfobYB5X/8lXQgVD98151Qb41s8F0tqQm8V1Q9zvx6YtC4ebDLPaXmSi8R8dRnLkN8IRSkNTzgUX3jprYVkT+sdNqmWm0SdWDOWoZc24YzHtCfKkJ67IQq0JObnKso9J8OHoNpuWmG6cq1EmRameRBUaQHjIO3znJrtZk0t6QV2zpVcwKjyLOeMijJ77FnvcCeoP5QGMBbyZ6txBT+XSoSdfGCGdISmbIqdXJ/OjABLqu5Vi+9whjRMOsRzZxKhmz9i3mfYRsR9ddMzsslwTuy8L95/xspr7CWUvoEZ/o6l9+2oOnGRd/OZ0jW3FKzZFI5saHXUO3k0+IEYU0XLUexlqpZ4LlTAFmn53zD2tz4PgMPe4Nb79rCq8xHoQMMAqPkXo+TLWuZHshYifGIVpNyaBohMAx4wJjoTZey1Fn9zxOiHPUZ75EDCVFlTePByQfQxrUHumnVlvAWFXvQSQf0FU9ze3NjzLhu46bav4hMOYeN01i4IP7xWX2LvvD87O3MFHrYFSwXtK7x6OSz9q/ZBdTzBHWPjQmz7ndhoaqSLse9TdUIrM9lHBvpF1D8M93qD2tImHt0rUHq22DwjIlOUa2ae2XWcw76fJIot/FQmYBKqj5xKg5eSEeRLGJKSiIUOiqJ+B9iunEu0x50Q43cYCL0fIAAAAAAAAAAAAAAAAAA==" alt="Pas d'image disponible" class="image-placeholder w-100">
+                {% endif %}
             </div>
             <div class="col-lg-6 mt-3">
                 <h3><strong>{{ advert.brand }} {{ advert.model }}</strong></h3>
@@ -114,12 +118,12 @@
                             <p>Transmission</p>
                             <p>{{ advert.transmission }}</p>
                         </div>
+                        {% if advert.carOptions %}
                         <div class="d-flex justify-content-between border-bottom border-1 mt-3 flex-wrap">
-                            {% if advert.carOptions %}
                             <p>Options</p>
                             <p>{{ advert.carOptions }}</p>
-                            {% endif %}
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <p class="fw-bold fs-4 mt-4">Description de l'annonce</p>
