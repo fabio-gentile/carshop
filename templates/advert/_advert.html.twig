@@ -1,8 +1,8 @@
 {% set url = path('advert_show', {'slug': advert.slug}) %}
 <div class="col-md-4">
-    <a class="card bg-light mb-3 text-decoration-none" href="{{ url }}">
+    <a class="card bg-light mb-3 text-decoration-none" href="{{ url }}" title="Voir l'annonce">
         <div>
-            <img src="{{ advert.coverImage }}" alt="image de {{ advert.seller.fullName }}" class="img-fluid">
+            <img src="{{ advert.coverImage }}" alt="image de {{ advert.seller.fullName }}" class="w-100 object-fit-cover" style="height: 280px">
         </div>
         <div class="card-body">
             <h4 class="card-title">{{ advert.brand }} {{ advert.model }}</h4>
