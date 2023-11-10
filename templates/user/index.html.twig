@@ -20,8 +20,8 @@
         </div>
         <div class="col-md-9">
             <div class="d-flex gap-3 gap-lg-5 align-items-center flex-wrap">
-                <h1 class="mx-auto">{{ user.fullName }}</h1>
-                <button type="button" class="btn btn-primary {{ user.adverts | length <= 0 ? 'disabled' }} mx-auto">
+                <h1 class="mx-sm-0 mx-auto">{{ user.fullName }}</h1>
+                <button type="button" class="btn btn-primary {{ user.adverts | length <= 0 ? 'disabled' }} mx-sm-0 mx-auto">
                     Annonce{{ user.adverts | length > 0 ? 's' }} : {{ user.adverts | length }}
                 </button>
             </div>
