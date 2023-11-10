@@ -21,10 +21,19 @@ class AdvertFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
         $faker = Factory::create('fr_FR');
+
+        // création d'un admin
+        $admin = new User();
+        $admin->setFirstName('Fabio')
+            ->setLastName('Gentile')
+            ->setEmail('gentile@epse.be')
+            ->setPassword($this->passwordHasher->hashPassword($admin, 'password'))
+            ->setDescription($faker->paragraphs(3, true))
+            ->setRoles(['ROLE_ADMIN']);
+
+        $manager->persist($admin);
+
         $users = [];
         // generate 15 users
         for ($i = 0; $i < 15; $i++) {
