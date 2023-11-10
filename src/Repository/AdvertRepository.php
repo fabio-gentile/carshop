@@ -45,4 +45,20 @@ class AdvertRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * Permet de faire une requete LIKE
+     * @param $expression
+     * @return array|null
+     */
+    public function findByCriteriaExpression($expression, $field, $limit = null, $offset = 0) : ?array
+    {
+        return $this->createQueryBuilder('advert')
+            ->where('advert.' . $field . ' LIKE :a')
+            ->setParameter('a', $expression)
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
 }
