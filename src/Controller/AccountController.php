@@ -233,4 +233,25 @@ class AccountController extends AbstractController
             'myForm' => $form->createView()
         ]);
     }
+
+    /**
+     * Permet de supprimer l'image de l'utilisateur
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route("/account/image-delete", name: "account_image_delete")]
+    #[IsGranted('ROLE_USER')]
+    public function removeImg(EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+        if (!empty($user->getPicture())) {
+            unlink($this->getParameter('uploads_directory') . '/' . $user->getPicture());
+            $user->setPicture(null);
+
+            $manager->persist($user);
+            $manager->flush();
+            $this->addFlash('success', 'Votre avatar a bien été supprimé');
+        }
+        return $this->redirectToRoute('account_index');
+    }
 }
