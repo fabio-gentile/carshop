@@ -6,99 +6,23 @@
     <div class="container">
         <div class="jumbotron mt-4">
             <h1 class="display-5">Bienvenue sur Carshop</h1>
-            <p>Nous mettons en relation des futurs locataires et les propriétaires qui veulent profiter
-                d'opportunités et gagner de l'argent en proposant leurs biens à la location pour des vacances</p>
-            <hr class="my-4">
-            <p>Vous êtes voyageur? Et vous voulez voir où vous pourrez loger pour votre prochain déplacement?</p>
-            <p class="lead">
-                <a href="" class="btn btn-primary p-3" role="button">Voir nos voitures</a>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium ad aliquam asperiores aut, consequatur cum cupiditate, delectus dolorem eaque fuga inventore iusto laudantium nemo nostrum officia quaerat qui quis quo, sequi totam. Accusantium architecto aut culpa cupiditate doloremque excepturi exercitationem fugit, harum impedit, maiores maxime neque obcaecati recusandae sed soluta.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid, dolores fuga laborum mollitia neque nihil officia perspiciatis provident quod ratione repudiandae similique totam ullam.</p>
+            <p class="lead mt-3">
+                <a href="{{ path('advert_index') }}" class="btn btn-primary p-3" role="button">Voir nos voitures</a>
             </p>
         </div>
-        <h1 class="mt-3 mb-4">Nos biens immobilier stars</h1>
+        <h1 class="mt-5 mb-4">Véhicules récemment ajoutés.</h1>
         <div class="row">
-            <div class="col-md-4">
-                <div class="card bg-dark mb-3 text-white">
-                    <div class="card-header text-center">
-                        3 chambres, <strong>49€ / nuit</strong>
-                    </div>
-                    <img src="http://placehold.it/1000x400" alt="Image de l'appartement" class="starsimg">
-                    <div class="card-body">
-                        <div class="card-title">
-                            Super appartement!
-                        </div>
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, earum modi! Dolorem at
-                            exercitationem sapiente optio aliquam blanditiis.
-                        </p>
-                        <a href="#" class="btn btn-secondary btn-sm">En savoir plus</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg-light mb-3">
-                    <div class="card-header text-center">
-                        3 chambres, <strong>49€ / nuit</strong>
-                    </div>
-                    <img src="http://placehold.it/1000x400" alt="Image de l'appartement" class="starsimg">
-                    <div class="card-body">
-                        <div class="card-title">
-                            Super appartement!
-                        </div>
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, earum modi! Dolorem at
-                            exercitationem sapiente optio aliquam blanditiis.
-                        </p>
-                        <a href="#" class="btn btn-secondary">En savoir plus</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg-light mb-3">
-                    <div class="card-header text-center">
-                        3 chambres, <strong>49€ / nuit</strong>
-                    </div>
-                    <img src="http://placehold.it/1000x400" alt="Image de l'appartement" class="starsimg">
-                    <div class="card-body">
-                        <div class="card-title">
-                            Super appartement!
-                        </div>
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, earum modi! Dolorem at
-                            exercitationem sapiente optio aliquam blanditiis.
-                        </p>
-                        <a href="#" class="btn btn-secondary">En savoir plus</a>
-                    </div>
-                </div>
-            </div>
+            {% for advert in lastAdverts %}
+                {% include 'advert/_advert.html.twig' %}
+            {% endfor %}
         </div>
-        <h1 class="mt-3 mb-4">Nos propriétaires stars</h1>
+        <h1 class="mt-3 mb-4">Véhicules électriques</h1>
         <div class="row">
-            <div class="col-md-6">
-                <div class="card border-secondary mb-3">
-                    <div class="card-body">
-                        <h4 class="card-title">Bruce Wayne</h4>
-                        <hr>
-                        <div class="card-text">
-                            <img src="http://placehold.it/64x64" alt="Avatar de Bruce Wayne" class="float-left ms-3">
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quas, rerum!</p>
-                            <a href="#" class="btn btn-success float-right">En savoir plus</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card border-secondary mb-3">
-                    <div class="card-body">
-                        <h4 class="card-title">Bruce Wayne</h4>
-                        <hr>
-                        <div class="card-text">
-                            <img src="http://placehold.it/64x64" alt="Avatar de Bruce Wayne" class="float-left ms-3">
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quas, rerum!</p>
-                            <a href="#" class="btn btn-success float-right">En savoir plus</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% for advert in electricCars %}
+                {% include 'advert/_advert.html.twig' %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
