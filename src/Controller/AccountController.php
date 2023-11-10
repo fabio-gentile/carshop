@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\PasswordUpdate;
 use App\Entity\User;
+use App\Entity\UserImageModify;
 use App\Form\AccountType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
+use App\Form\UserImageModifyType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -179,6 +181,56 @@ class AccountController extends AbstractController
         return $this->render('account/profile.html.twig', [
             'myForm' => $form->createView(),
             'user' => $user
+        ]);
+    }
+
+    /**
+     * Modification de l'avatar de l'utilisateur
+     * @param EntityManagerInterface $manager
+     * @param Request $request
+     * @return Response
+     */
+    #[Route("/account/image-modify", name: "account_image_modify")]
+    #[IsGranted('ROLE_USER')]
+    public function imgModify(EntityManagerInterface $manager, Request $request): Response
+    {
+        $imageModify = new UserImageModify();
+        $user = $this->getUser();
+        $form = $this->createForm(UserImageModifyType::class, $imageModify);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // permet de supprimer l'image dans le dossier
+            // gestion de la non obligation de l'image
+            if (!empty($user->getPicture())) {
+                unlink($this->getParameter('uploads_directory') . '/' . $user->getPicture());
+            }
+
+            // gestion de l'image
+            $file = $form->get('newPicture')->getData();
+            if (!empty($file)) {
+                $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFileName);
+                $newFilename = $safeFileName . '-' . uniqid() . '.' . $file->guessExtension();
+
+                // Move the file to the directory where pictures are stored
+                try {
+                    $file->move($this->getParameter('uploads_directory'), $newFilename);
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                    return $e->getMessage();
+                }
+
+                $user->setPicture($newFilename);
+            }
+
+            $manager->persist($user);
+            $manager->flush();
+            $this->addFlash('success', 'Votre avatar a bien été modifié');
+            return $this->redirectToRoute('account_index');
+        }
+        return $this->render('account/imageModify.html.twig', [
+            'myForm' => $form->createView()
         ]);
     }
 }
