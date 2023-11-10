@@ -85,7 +85,7 @@ class Advert
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\Length(
         min: 20,
-        max: 500,
+        max: 1500,
         minMessage: 'Votre description doit comporter au moins {{ limit }} caractères.',
         maxMessage: 'Votre description doit comporter au maximum {{ limit }} caractères.',
     )]
@@ -109,6 +109,9 @@ class Advert
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotNull]
     private ?\DateTimeInterface $yearOfRegistration = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
     {
@@ -342,5 +345,16 @@ class Advert
         $this->yearOfRegistration = $yearOfRegistration;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAt(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
     }
 }
