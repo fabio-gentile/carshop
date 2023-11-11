@@ -28,3 +28,5 @@ yarn-error.log
 
 Sujetpoo.pdf
 .idea
+composer.lock
+package-lock.json
