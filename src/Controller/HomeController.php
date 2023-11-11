@@ -12,7 +12,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(AdvertRepository $advert): Response
     {
-        $electricCars = $advert->findByCriteriaExpression('essence', 'fuelType', 3);
+        $electricCars = $advert->findByCriteriaExpression('electrique', 'fuelType', 3);
         return $this->render('home/index.html.twig', [
             'lastAdverts' => $advert->findBy([], ['createdAt' => 'DESC'], 3),
             'electricCars' =>  $electricCars
