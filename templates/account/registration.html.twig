@@ -7,8 +7,23 @@
         <h1>Inscription sur Carshop</h1>
         {{ form_start(myForm) }}
 
-        {{ form_widget(myForm) }}
-        <button type="submit" class='btn btn-success'>Confirmez l'inscription</button>
+        {{ form_row(myForm.email) }}
+        {{ form_row(myForm.password) }}
+        {{ form_row(myForm.passwordConfirm) }}
+        {{ form_row(myForm.firstName) }}
+        {{ form_row(myForm.lastName) }}
+        <div class="form-group">
+            <label for="{{ myForm.picture.vars.id }}" class="form-label">{{ myForm.picture.vars.label }}</label>
+                <img class="avatar" id="previewImage" style="display: none; margin: 1rem 0">
+            {{ form_widget(myForm.picture) }}
+        </div>
+        {{ form_row(myForm.description) }}
+
+        <button type="submit" class="btn btn-success">Confirmez l'inscription</button>
         {{ form_end(myForm) }}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('userAvatarPreview') }}
 {% endblock %}

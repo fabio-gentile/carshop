@@ -23,7 +23,8 @@ class RegistrationType extends ApplicationType
             ->add('lastName', TextType::class, $this->getConfiguration("Nom", "Votre nom de famille..."))
             ->add('picture', FileType::class, [
                 'label' => 'Avatar(jpg, png, gif)',
-                'required' => false
+                'required' => false,
+                'attr' => ['data-avatar' => 'preview']
             ])
             ->add('description', TextareaType::class, $this->getConfiguration("Description détaillée", "Présentez vous avec un peu plus de détails"));
     }
