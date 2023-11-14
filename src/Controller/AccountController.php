@@ -200,8 +200,6 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // permet de supprimer l'image dans le dossier
-            // gestion de la non obligation de l'image
             if (!empty($user->getPicture())) {
                 unlink($this->getParameter('uploads_directory') . '/' . $user->getPicture());
             }

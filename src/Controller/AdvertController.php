@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Ad;
 use App\Entity\Advert;
 use App\Form\AdvertType;
 use App\Repository\AdvertRepository;
@@ -40,6 +39,8 @@ class AdvertController extends AbstractController
 
     /**
      * Permet d'ajouter une annonce a la db
+     * @param Request $request
+     * @param EntityManagerInterface $manager
      * @return Response
      */
     #[Route('/advert/new', name: 'advert_create')]
@@ -47,7 +48,6 @@ class AdvertController extends AbstractController
     public function create(Request $request, EntityManagerInterface $manager): Response
     {
         $advert = new Advert();
-        // appelle src/Form/AdvertType.php
         $form = $this->createForm(AdvertType::class, $advert);
         $form->handleRequest($request);
 
