@@ -6,9 +6,9 @@
         <div class="row">
             {% if (app.user and app.user == advert.seller) or is_granted('ROLE_ADMIN') %}
                 <div class="d-block mt-3">
-                    <a href="{{ path('advert_edit', {'slug':advert.slug}) }}" class="btn btn-warning">Modification de
+                    <a href="{{ path('advert_edit', {'slug':advert.slug}) }}" class="btn btn-warning my-1 me-3">Modification de
                         l'annonce</a>
-                    <a href="{{ path('advert_delete', {'slug':advert.slug}) }}" class="btn btn-danger m-2">Supprimer
+                    <a href="{{ path('advert_delete', {'slug':advert.slug}) }}" class="btn btn-danger my-1 me-3">Supprimer
                         l'annonce</a>
                 </div>
             {% endif %}
