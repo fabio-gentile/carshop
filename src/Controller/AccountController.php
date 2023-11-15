@@ -170,7 +170,8 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPicture($picture);
+            $user->setPicture($picture)
+                ->setSlug('');
             $manager->persist($user);
             $manager->flush();
 

@@ -96,6 +96,7 @@ class AdvertController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $advert->setSlug('');
             // gestion des images
             foreach ($advert->getAdvertImages() as $image) {
                 $image->setAdvert($advert);
