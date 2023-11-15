@@ -19,6 +19,7 @@ class AdvertType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $currentYear = (int) date('Y');
         $builder
             ->add('brand', TextType::class, $this->getConfiguration('Marque', 'Marque de la voiture'))
             ->add('model', TextType::class, $this->getConfiguration('Modèle', 'Modèle de la voiture'))
@@ -34,7 +35,7 @@ class AdvertType extends ApplicationType
             ->add('car_options', TextType::class, $this->getConfiguration('Options du véhicule', 'Option(s) disponible(s) (optionnel)', ['required' => false]))
             ->add('yearOfRegistration', DateType::class, $this->getConfiguration('Annee de mise en circulation', 'Année de mise en circulaire de la voiture' , [
                 'format' => 'dd-MMMM-yyyy',
-                'years' => range(2000, 2023)
+                'years' => range($currentYear - 25, $currentYear)
             ]))
             ->add('advertImages', CollectionType::class, [
                 'entry_type' => AdvertImageType::class,
