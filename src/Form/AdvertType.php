@@ -34,6 +34,7 @@ class AdvertType extends ApplicationType
             ->add('car_options', TextType::class, $this->getConfiguration('Options du véhicule', 'Option(s) disponible(s) (optionnel)', ['required' => false]))
             ->add('yearOfRegistration', DateType::class, $this->getConfiguration('Annee de mise en circulation', 'Année de mise en circulaire de la voiture' , [
                 'format' => 'dd-MMMM-yyyy',
+                'years' => range(2000, 2023)
             ]))
             ->add('advertImages', CollectionType::class, [
                 'entry_type' => AdvertImageType::class,
