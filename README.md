@@ -3,7 +3,7 @@
 
 ## Introduction
 
-L'objectif mon examen de Symfony était de créer une application web pour gérer un garage automobile. L'application devait permettre aux utilisateurs de se connecter, créer un compte, et utiliser un ensemble de fonctionnalités CRUD pour gérer leur profil ainsi que les annonces liées au garage.
+L'objectif mon examen de Symfony était de créer une application web pour gérer un garage automobile. L'application permet aux utilisateurs de se connecter, créer un compte, et utiliser un ensemble de fonctionnalités CRUD pour gérer leur profil ainsi que les annonces liées au garage.
 
 ## Technologies utilisées
 
