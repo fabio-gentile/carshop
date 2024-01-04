@@ -1,7 +1,7 @@
 
 # Projet d'examen Symfony : Carshop
 
-![Miniature carshop](https://fabiogentile.me/thumbnail/carshop.png)
+![Miniature carshop](https://fabiogentile.me/thumbnail/carshop.webp)
 
 ## Introduction
 
